@@ -1,3 +1,5 @@
+import { hasBuiltInAI, summarizeText } from "./ai.js";
+
 const out = document.getElementById("out");
 const btn = document.getElementById("analyze");
 
@@ -17,21 +19,18 @@ async function getPageText(tabId) {
 }
 
 async function summarizeLocally(text) {
-  const hasAI = typeof window !== "undefined" && "ai" in window && window.ai?.summarizer;
-  if (!hasAI) {
+  if (!hasBuiltInAI()) {
     return { summary: null, note: "Built-in AI not available. Hello world fallback." };
   }
   try {
-    const summarizer = await window.ai.summarizer.create({
-      type: "key-points"
-    });
-    const clipped = text.slice(0, 8000);
-    const result = await summarizer.summarize(clipped);
-    return { summary: result, note: "On-device summary (Summarizer API)." };
+    const summary = await summarizeText(text, "key-points");
+    if (summary) {
+      return { summary, note: "On-device summary (Summarizer API)." };
+    }
   } catch (e) {
     console.error(e);
-    return { summary: null, note: "Failed to create/use Summarizer." };
   }
+  return { summary: null, note: "Failed to create/use Summarizer." };
 }
 
 btn.addEventListener("click", async () => {
