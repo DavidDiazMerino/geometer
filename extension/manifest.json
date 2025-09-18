@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "LLM Ready Hello",
+  "version": "0.0.1",
+  "description": "Hello world + Built-in AI (Summarizer) if available.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "sw.js"
+  },
+  "action": {
+    "default_title": "LLM Ready Hello"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  }
+}
